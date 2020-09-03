@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var a = 999;
+      function test(b = 0) {
+        console.log(this.a + b);
+      }
+      const obj = {
+        a: 1,
+      };
+      //   test.call(obj, 3); //等同于
+      // const obj = {
+      //   a: 1,
+      //   test,
+      // };
+      // obj.test(3);
+
+      //   call原理  首先把函数赋值给this要指向的对象，然后调用这个函数，执行之后从对象上删除这个函数  如下
+      //   obj.test = test;
+      //   obj.test();
+      //   delete obj.test;
+
+      Function.prototype.myCall = function (obj, ...args) {
+        //传入null/undefined时this指向window
+        if (obj === null || obj === undefined) {
+          obj = window;
+        } else {
+          obj = Object(obj) || obj;
+        }
+        // 此处的this是指的被调用的函数
+        // console.log(this);
+        obj.fun = this;
+        const res = obj.fun(...args);
+        delete obj.fun;
+        return res
+      };
+      test.myCall(obj, 1);
+      //   test.myCall(null, 1); //1000
+    </script>
+  </body>
+</html>

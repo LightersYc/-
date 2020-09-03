@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function myNew(constructor, params) {
+        var res = {};
+        res.__proto__ = constructor.prototype;
+        const temp = constructor.call(res, params);
+        return temp instanceof Object ? temp : res;
+      }
+
+      function Animal(name) {
+        this.name = name;
+        return {
+          prop: "test",
+        };
+      }
+      Animal.prototype.sayName = function () {
+        console.log("I'm " + this.name);
+      };
+
+      // var cat = new Animal('gakki');
+      var cat = myNew(Animal, "gakki");
+      console.log(cat.name);
+      // console.log(cat.prop);
+      // cat.sayName();
+      // console.log(cat.__proto__ === Object.prototype);
+      // console.log(cat.__proto__ === Animal.prototype);
+    </script>
+  </body>
+</html>

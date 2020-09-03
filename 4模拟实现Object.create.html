@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var obj = {
+        name: "jay",
+        age: 18,
+      };
+
+      function creatObj(context) {
+        function Fun() {}
+        Fun.prototype = context;
+        return new Fun();
+      }
+
+      //   var obj2 = Object.create(obj);
+      var obj2 = creatObj(obj);
+      obj2.name = "gakki";
+      console.log(obj2.name);
+      console.dir(obj2);
+    </script>
+  </body>
+</html>

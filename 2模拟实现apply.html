@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var a = 999;
+      function test(b = 0) {
+        console.log(this.a + b);
+      }
+      const obj = {
+        a: 1,
+      };
+      // test.apply(obj, [1]);
+
+      //原理同call类似 只是传递的参数不同 apply是传数组
+      Function.prototype.myApply = function (obj, arr) {
+        if (obj === null || obj === undefined) {
+          obj = window;
+        } else {
+          obj = Object(obj) || obj;
+        }
+        obj.fun = this;
+        arr = arr || [];
+        const res = obj.fun(...arr);
+        delete obj.fun;
+        return res;
+      };
+
+      test.myApply(obj, [12]);
+      //   test.myApply(null, [1]);
+      console.log(Math.max.myApply(null, [1, 2, 4, 10]));
+    </script>
+  </body>
+</html>

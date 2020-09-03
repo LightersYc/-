@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function Test(name) {
+        this.name = name;
+      }
+
+      var obj = {
+        name: "gakki",
+      };
+
+      Function.prototype.myBind = function (obj) {
+        // 保存被调用函数的this
+        var _this = this;
+
+        // 保存参数
+        var args = [].slice.call(arguments, 1);
+        function Temp() {}
+        function Fun() {
+          //合并参数
+          var allArgs = args.concat([].slice.call(arguments));
+          // 当被调用函数作为构造函数时 this指向应该在被调用的函数上
+          // _this.apply(obj, allArgs);
+          _this.apply(this.__proto__ === Fun.prototype ? this : obj, allArgs);
+        }
+        Temp.prototype = this.prototype;
+        Fun.prototype = new Temp();
+        // Fun.prototype = this.prototype;
+        return Fun;
+      };
+
+      var cat = new Test("dog");
+      console.log(cat);
+      var Test2 = Test.myBind(obj);
+      var cat2 = new Test2("cat");
+      console.log(cat2);
+      console.log(obj);
+      console.log(cat2.__proto__ === Test.prototype);
+    </script>
+  </body>
+</html>
